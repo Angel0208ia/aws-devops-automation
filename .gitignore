@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# AWS
+.aws/
+*.pem
+credentials
+config
+
+# Logs
+*.log
+logs/
+*.out
+
+# Docker
+.docker/
+*.tar
+docker-data/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Zip
+*.zip
