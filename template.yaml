@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Plantilla CloudFormation para proyecto DevOps en AWS Learner Lab
+
+Resources:
+  DevOpsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group para instancia EC2 del proyecto DevOps
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+          Description: Permitir trafico HTTP
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+          Description: Permitir trafico HTTPS
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 10.0.0.0/16
+          Description: Permitir SSH solo desde la red interna
+
+  DevOpsEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0c101f26f147fa7fd
+      IamInstanceProfile: LabInstanceProfile
+      SecurityGroups:
+        - !Ref DevOpsSecurityGroup
+      Tags:
+        - Key: Name
+          Value: devops-ec2-cloudformation
+
+  DevOpsS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub devops-bucket-${AWS::AccountId}
+      VersioningConfiguration:
+        Status: Enabled
+      Tags:
+        - Key: Name
+          Value: devops-s3-cloudformation
+
+Outputs:
+  InstanceId:
+    Description: ID de la instancia EC2 creada
+    Value: !Ref DevOpsEC2Instance
+
+  BucketName:
+    Description: Nombre del bucket S3 creado
+    Value: !Ref DevOpsS3Bucket
