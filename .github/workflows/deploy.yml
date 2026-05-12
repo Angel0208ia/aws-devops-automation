@@ -27,7 +27,7 @@ jobs:
       - name: Probar importacion de Flask
         run: |
           python -m py_compile docker/app.py
-          python -c "from docker.app import app; print('Aplicacion Flask importada correctamente')"
+          python -c "import sys; sys.path.append('docker'); from app import app; print('Aplicacion Flask importada correctamente')"
 
   deploy:
     name: deploy
@@ -78,5 +78,5 @@ jobs:
             --instance-ids "$INSTANCE_ID" \
             --document-name "AWS-RunShellScript" \
             --comment "Deploy desde GitHub Actions" \
-            --parameters commands="echo 'Deploy ejecutado desde GitHub Actions' && date" \
+            --parameters '{"commands":["echo Deploy ejecutado desde GitHub Actions","date"]}' \
             --region us-east-1
