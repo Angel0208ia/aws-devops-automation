@@ -1,0 +1,1 @@
+{"statusCode": 200, "headers": {"Content-Type": "application/json"}, "body": "{\"mensaje\": \"Despliegue automatizado completado correctamente.\", \"servicio\": \"microservicio-devops\"}"}
