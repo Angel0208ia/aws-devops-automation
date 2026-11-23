@@ -1,9 +1,13 @@
 name: CI/CD DevOps AWS
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -33,6 +37,7 @@ jobs:
     name: deploy
     runs-on: ubuntu-latest
     needs: test
+    if: github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Clonar repositorio
@@ -52,7 +57,7 @@ jobs:
 
       - name: Comprimir aplicacion
         run: |
-          zip -r app-devops.zip docker/ template.yaml *.py *.sh || true
+          zip -r app-devops.zip docker/ template.yaml *.py *.sh
 
       - name: Subir artefacto a S3
         run: |
